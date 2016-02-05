@@ -2151,13 +2151,14 @@ public class BluetoothLePlugin extends CordovaPlugin
 
             connections = new HashMap<Object, HashMap<Object,Object>>();
             synchronized(scanLock) {
-              if (scanCallbackContext != null){
-                if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP){      // If, else statement added by SSAB
-                  // "Stop scanning" so same scan callback can be used again to start a new scan
+              if (scanCallbackContext != null) {                     // If statement and its code block added by SSAB
+                // Bluetooth has been turned off while scanning
+                if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
+                  // "Stop scanning" so same scan callback can be used again to start a new scan once bluetooth has been enabled
                   bluetoothAdapter.stopLeScan(scanCallbackKitKat);
                 }
                 else {
-                  // "Stop scanning" so same scan callback can be used again to start a new scan
+                  // "Stop scanning" so same scan callback can be used again to start a new scan once bluetooth has been enabled
                   bluetoothAdapter.getBluetoothLeScanner().stopScan(scanCallback);
                 }
               }
