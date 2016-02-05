@@ -588,7 +588,7 @@ public class BluetoothLePlugin extends CordovaPlugin
 
   public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults) throws JSONException
   {
-    if (permissionsCallback == null) {
+    /*if (permissionsCallback == null) {      // Change by SSAB
       return;
     }
 
@@ -597,20 +597,20 @@ public class BluetoothLePlugin extends CordovaPlugin
 
     addProperty(returnObj, "requestPermission", cordova.hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION));
 
-    permissionsCallback.success(returnObj);
+    permissionsCallback.success(returnObj);*/
   }
 
   public void hasPermissionAction(CallbackContext callbackContext) {
-    JSONObject returnObj = new JSONObject();
+    /*JSONObject returnObj = new JSONObject();      // Change by SSAB
 
     addProperty(returnObj, "hasPermission", cordova.hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION));
 
-    callbackContext.success(returnObj);
+    callbackContext.success(returnObj);*/
   }
 
   public void requestPermissionAction(CallbackContext callbackContext) {
-    permissionsCallback = callbackContext;
-    cordova.requestPermission(this, REQUEST_ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION);
+    /*permissionsCallback = callbackContext;      // Change by SSAB
+    cordova.requestPermission(this, REQUEST_ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION);*/
   }
 
   private void initializeAction(JSONArray args, CallbackContext callbackContext)
