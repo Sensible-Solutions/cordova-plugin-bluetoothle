@@ -2160,6 +2160,20 @@ public class BluetoothLePlugin extends CordovaPlugin
 
             break;
           case BluetoothAdapter.STATE_ON:
+            
+            synchronized(scanLock) {                // synchronized code block added by SSAB
+              if (scanCallbackContext != null){
+                // "Stop scanning" if we were scanning and bluetooth was disabled.
+                // This way, we can start a new scan using same scan callback.
+                if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
+                  bluetoothAdapter.stopLeScan(scanCallbackKitKat);
+                }
+                else {
+                  bluetoothAdapter.getBluetoothLeScanner().stopScan(scanCallback);
+                }
+                scanCallbackContext = null;
+              }
+            }
 
             addProperty(returnObj, keyStatus, statusEnabled);
 
