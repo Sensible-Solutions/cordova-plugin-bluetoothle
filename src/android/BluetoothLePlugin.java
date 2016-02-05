@@ -2151,7 +2151,7 @@ public class BluetoothLePlugin extends CordovaPlugin
 
             connections = new HashMap<Object, HashMap<Object,Object>>();
             synchronized(scanLock) {
-              //scanCallbackContext = null;           // Change by SSAB
+              scanCallbackContext = null;
             }
 
             pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
@@ -2161,7 +2161,7 @@ public class BluetoothLePlugin extends CordovaPlugin
             break;
           case BluetoothAdapter.STATE_ON:
             
-            synchronized(scanLock) {                // synchronized code block added by SSAB
+            /*synchronized(scanLock) {                // synchronized code block added by SSAB
               if (scanCallbackContext != null){
                 // "Stop scanning" if we were scanning and bluetooth was disabled.
                 // This way, we can start a new scan using same scan callback.
@@ -2173,7 +2173,7 @@ public class BluetoothLePlugin extends CordovaPlugin
                 }
                 scanCallbackContext = null;
               }
-            }
+            }*/
 
             addProperty(returnObj, keyStatus, statusEnabled);
 
