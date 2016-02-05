@@ -806,7 +806,7 @@ public class BluetoothLePlugin extends CordovaPlugin
         catch(java.lang.IllegalArgumentException e) {
         }
 
-        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M)
+        /*if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M)      // Change by SSAB (need API level 23...cordova android 5.0.0 or above)
         {
           int matchMode = obj.optInt(keyMatchMode, ScanSettings.MATCH_MODE_AGGRESSIVE);
           try { scanSettings.setMatchMode(matchMode); }
@@ -822,7 +822,7 @@ public class BluetoothLePlugin extends CordovaPlugin
           try { scanSettings.setCallbackType(callbackType); }
           catch(java.lang.IllegalArgumentException e) {
           }
-        }
+        }*/
 
         //Start the scan with or without service UUIDs
         bluetoothAdapter.getBluetoothLeScanner().startScan(scanFilter, scanSettings.build(), scanCallback);
