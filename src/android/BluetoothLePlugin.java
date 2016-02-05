@@ -2150,9 +2150,9 @@ public class BluetoothLePlugin extends CordovaPlugin
             addProperty(returnObj, keyMessage, logNotEnabled);
 
             connections = new HashMap<Object, HashMap<Object,Object>>();
-            synchronized(scanLock) {
+            //synchronized(scanLock) {            // Change by SSAB
               scanCallbackContext = null;
-            }
+            //}
 
             pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
             pluginResult.setKeepCallback(true);
