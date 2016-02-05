@@ -3,7 +3,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" id="cordova-plugin-bluetoothle" version="0.0.1">
   <engines>
     <engine name="cordova" version=">=3.0.0" />
-    <!-- <engine name="cordova-android" version=">=5.0.0" /> -->
+    <!-- <engine name="cordova-android" version=">=5.0.0" /> -->  <!-- Test SSAB -->
   </engines>
   <name>Bluetooth LE</name>
   <description>Use the Bluetooth Low Energy plugin to connect your Cordova app to new Bluetooth devices like heart rate monitors, thermometers, etc...</description>
@@ -19,6 +19,7 @@
         <param name="android-package" value="com.randdusing.bluetoothle.BluetoothLePlugin" />
       </feature>
     </config-file>
+    <framework src="com.android.support:support-v4:+" />    <!-- Test SSAB -->
     <source-file src="src/android/BluetoothLePlugin.java" target-dir="src/com/randdusing/bluetoothle" />
     <config-file target="AndroidManifest.xml" parent="/manifest">
       <uses-permission android:name="android.permission.BLUETOOTH"/>
