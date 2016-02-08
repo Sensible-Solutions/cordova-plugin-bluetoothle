@@ -3674,4 +3674,19 @@ public class BluetoothLePlugin extends CordovaPlugin
       }
     }
   }
+  
+  private void showDebugMsgBox(String message)      // Function added by SSAB
+	{
+		
+		AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
+		debugAlert.setMessage(message);
+		debugAlert.setTitle("Debug GATT Server");
+		debugAlert.setCancelable(false);
+		debugAlert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int id) {
+		          	dialog.dismiss();  
+		        }
+		});
+		debugAlert.create().show();
+	}
 }
