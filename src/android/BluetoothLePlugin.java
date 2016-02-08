@@ -3680,10 +3680,10 @@ public class BluetoothLePlugin extends CordovaPlugin
     }
   }
   
-  private void showDebugMsgBox(CharSequence message)      // Function added by SSAB
+  private void showDebugMsgBox(final String message)      // Function added by SSAB
 	{
 		// Need to show the dialog on the UI thread
-		runOnUiThread(new Runnable() {
+		cordova.getActivity().runOnUiThread(new Runnable() {
 	                @Override
 	                public void run() {
 	                	AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
