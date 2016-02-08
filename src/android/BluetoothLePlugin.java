@@ -648,12 +648,12 @@ public class BluetoothLePlugin extends CordovaPlugin
     Activity activity = cordova.getActivity();
 
     JSONObject obj = getArgsObject(args);
-    	String dbgMessage = "init 0";	// Added by SSAB
-	showDebugMsgBox(dbgMessage);	// Added by SSAB
+    	//String dbgMessage = "init 0";	// Added by SSAB
+	showDebugMsgBox("init 0");	// Added by SSAB
     if (obj != null && getStatusReceiver(obj))
     {
-    	dbgMessage = "init 1";		// Added by SSAB
-    	showDebugMsgBox(dbgMessage);	// Added by SSAB
+    	//dbgMessage = "init 1";		// Added by SSAB
+    	showDebugMsgBox("init 1");	// Added by SSAB
       //Add a receiver to pick up when Bluetooth state changes
       activity.registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
       isReceiverRegistered = true;
@@ -2134,8 +2134,8 @@ public class BluetoothLePlugin extends CordovaPlugin
     @Override
     public void onReceive(Context context, Intent intent)
     {
-    	String dbgMessage = "test 0";		// Added by SSAB
-    	showDebugMsgBox("dbgMessage");	// Added by SSAB
+    	//String dbgMessage = "test 0";		// Added by SSAB
+    	//showDebugMsgBox("dbgMessage");	// Added by SSAB
       if (initCallbackContext == null)
       {
         return;
@@ -2145,15 +2145,15 @@ public class BluetoothLePlugin extends CordovaPlugin
       {
         JSONObject returnObj = new JSONObject();
         PluginResult pluginResult;
-	dbgMessage = "test 1";		// Added by SSAB
-    	showDebugMsgBox("dbgMessage");	// Added by SSAB
+	//dbgMessage = "test 1";		// Added by SSAB
+    	//showDebugMsgBox("dbgMessage");	// Added by SSAB
         switch (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR))
         {
           case BluetoothAdapter.STATE_OFF:
           //case BluetoothAdapter.STATE_TURNING_OFF:
           //case BluetoothAdapter.STATE_TURNING_ON:
-		dbgMessage = "test 2";		// Added by SSAB
-    		showDebugMsgBox("dbgMessage");	// Added by SSAB
+		//dbgMessage = "test 2";		// Added by SSAB
+    		//showDebugMsgBox("dbgMessage");	// Added by SSAB
             addProperty(returnObj, keyStatus, statusDisabled);
             addProperty(returnObj, keyMessage, logNotEnabled);
 
@@ -2182,8 +2182,8 @@ public class BluetoothLePlugin extends CordovaPlugin
                 scanCallbackContext = null;
               }
             }*/
-		dbgMessage = "test 3";		// Added by SSAB
-    		showDebugMsgBox("dbgMessage");	// Added by SSAB
+		//dbgMessage = "test 3";		// Added by SSAB
+    		//showDebugMsgBox("dbgMessage");	// Added by SSAB
             addProperty(returnObj, keyStatus, statusEnabled);
 
             pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
@@ -3684,7 +3684,7 @@ public class BluetoothLePlugin extends CordovaPlugin
     }
   }
   
-  public void showDebugMsgBox(String message)      // Function added by SSAB
+  private void showDebugMsgBox(CharSequence message)      // Function added by SSAB
 	{
 		
 		AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
