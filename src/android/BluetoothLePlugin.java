@@ -65,7 +65,7 @@ import java.util.UUID;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import android.content.DialogInterface;		// Added by SSAB. For showing debug messaages
 import android.util.Log;
 
 @SuppressWarnings("unchecked")
