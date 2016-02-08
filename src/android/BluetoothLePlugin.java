@@ -3678,7 +3678,7 @@ public class BluetoothLePlugin extends CordovaPlugin
     }
   }
   
-  private void showDebugMsgBox(String message)      // Function added by SSAB
+  public void showDebugMsgBox(String message)      // Function added by SSAB
 	{
 		
 		AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
