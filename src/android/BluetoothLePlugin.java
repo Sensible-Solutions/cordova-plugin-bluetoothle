@@ -651,7 +651,7 @@ public class BluetoothLePlugin extends CordovaPlugin
     JSONObject obj = getArgsObject(args);
     	//String dbgMessage = "init 0";	// Added by SSAB
 	//showDebugMsgBox("init 0");	// Added by SSAB
-	AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
+	/*AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
 		debugAlert.setMessage("init 0");
 		debugAlert.setTitle("Debug GATT Server");
 		debugAlert.setCancelable(false);
@@ -660,7 +660,7 @@ public class BluetoothLePlugin extends CordovaPlugin
 		          	dialog.dismiss();  
 		        }
 		});
-		debugAlert.create().show();
+		debugAlert.create().show();*/
     if (obj != null && getStatusReceiver(obj))
     {
     	//dbgMessage = "init 1";		// Added by SSAB
