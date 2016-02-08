@@ -648,10 +648,12 @@ public class BluetoothLePlugin extends CordovaPlugin
     Activity activity = cordova.getActivity();
 
     JSONObject obj = getArgsObject(args);
-	showDebugMsgBox("init 0");	// Added by SSAB
+    	String dbgMessage = "init 0";	// Added by SSAB
+	showDebugMsgBox(dbgMessage);	// Added by SSAB
     if (obj != null && getStatusReceiver(obj))
     {
-    	showDebugMsgBox("init 1");	// Added by SSAB
+    	dbMessage = "init 1";		// Added by SSAB
+    	showDebugMsgBox(dbgMessage);	// Added by SSAB
       //Add a receiver to pick up when Bluetooth state changes
       activity.registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
       isReceiverRegistered = true;
@@ -3683,6 +3685,7 @@ public class BluetoothLePlugin extends CordovaPlugin
 		
 		AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
 		debugAlert.setMessage(message);
+		//debugAlert.setMessage("hej");
 		debugAlert.setTitle("Debug GATT Server");
 		debugAlert.setCancelable(false);
 		debugAlert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
