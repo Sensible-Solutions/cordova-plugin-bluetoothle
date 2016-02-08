@@ -652,7 +652,7 @@ public class BluetoothLePlugin extends CordovaPlugin
 	showDebugMsgBox(dbgMessage);	// Added by SSAB
     if (obj != null && getStatusReceiver(obj))
     {
-    	dbMessage = "init 1";		// Added by SSAB
+    	dbgMessage = "init 1";		// Added by SSAB
     	showDebugMsgBox(dbgMessage);	// Added by SSAB
       //Add a receiver to pick up when Bluetooth state changes
       activity.registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
@@ -2134,7 +2134,8 @@ public class BluetoothLePlugin extends CordovaPlugin
     @Override
     public void onReceive(Context context, Intent intent)
     {
-    	showDebugMsgBox("test 0");	// Added by SSAB
+    	String dbgMessage = "test 0";		// Added by SSAB
+    	showDebugMsgBox("dbgMessage");	// Added by SSAB
       if (initCallbackContext == null)
       {
         return;
@@ -2144,13 +2145,15 @@ public class BluetoothLePlugin extends CordovaPlugin
       {
         JSONObject returnObj = new JSONObject();
         PluginResult pluginResult;
-	showDebugMsgBox("test 1");	// Added by SSAB
+	dbgMessage = "test 1";		// Added by SSAB
+    	showDebugMsgBox("dbgMessage");	// Added by SSAB
         switch (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR))
         {
           case BluetoothAdapter.STATE_OFF:
           //case BluetoothAdapter.STATE_TURNING_OFF:
           //case BluetoothAdapter.STATE_TURNING_ON:
-		showDebugMsgBox("test 2");	// Added by SSAB
+		dbgMessage = "test 2";		// Added by SSAB
+    		showDebugMsgBox("dbgMessage");	// Added by SSAB
             addProperty(returnObj, keyStatus, statusDisabled);
             addProperty(returnObj, keyMessage, logNotEnabled);
 
@@ -2179,7 +2182,8 @@ public class BluetoothLePlugin extends CordovaPlugin
                 scanCallbackContext = null;
               }
             }*/
-		showDebugMsgBox("test 3");	// Added by SSAB
+		dbgMessage = "test 3";		// Added by SSAB
+    		showDebugMsgBox("dbgMessage");	// Added by SSAB
             addProperty(returnObj, keyStatus, statusEnabled);
 
             pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
