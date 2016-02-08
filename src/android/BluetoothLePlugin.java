@@ -651,12 +651,11 @@ public class BluetoothLePlugin extends CordovaPlugin
     JSONObject obj = getArgsObject(args);
     	//String dbgMessage = "init 0";	// Added by SSAB
 	//showDebugMsgBox("init 0");	// Added by SSAB
-	AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity().getApplicationContext());
+	AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
 		debugAlert.setMessage("init 0");
 		debugAlert.setTitle("Debug GATT Server");
 		debugAlert.setCancelable(false);
 		debugAlert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-			@Override
 		        public void onClick(DialogInterface dialog, int id) {
 		          	dialog.dismiss();  
 		        }
