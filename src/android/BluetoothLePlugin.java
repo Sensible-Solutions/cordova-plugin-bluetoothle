@@ -649,8 +649,10 @@ public class BluetoothLePlugin extends CordovaPlugin
     Activity activity = cordova.getActivity();
 
     JSONObject obj = getArgsObject(args);
-	showDebugMsgBox("init 0");	// Added by SSAB
-	
+	//showDebugMsgBox("init 0");	// Added by SSAB
+	if(obj == null)			// Added by SSAB
+		showDebugMsgBox("obj is null");	// Added by SSAB
+		
     if (obj != null && getStatusReceiver(obj))
     {
     	showDebugMsgBox("init 1");	// Added by SSAB
