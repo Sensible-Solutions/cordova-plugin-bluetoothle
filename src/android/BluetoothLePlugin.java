@@ -2872,6 +2872,7 @@ public class BluetoothLePlugin extends CordovaPlugin
 
   private JSONObject getArgsObject(JSONArray args)
   {
+  	showDebugMsgBox("args.length(): " + args.lenght()); 	// Added by SSAB
     if (args.length() == 1)
     {
       try
@@ -2880,6 +2881,7 @@ public class BluetoothLePlugin extends CordovaPlugin
       }
       catch (JSONException ex)
       {
+      	showDebugMsgBox("Catched!"); 	// Added by SSAB
       }
     }
 
