@@ -2881,7 +2881,7 @@ public class BluetoothLePlugin extends CordovaPlugin
       }
       catch (JSONException ex)
       {
-      	showDebugMsgBox("Catched!"); 	// Added by SSAB
+      	showDebugMsgBox("Catched: " + ex.getMessage()); 	// Added by SSAB
       }
     }
 
