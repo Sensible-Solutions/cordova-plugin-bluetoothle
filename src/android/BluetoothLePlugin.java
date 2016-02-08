@@ -65,7 +65,7 @@ import java.util.UUID;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import android.R;				// Added by SSAB. For showing debug messages
+//import android.R;				// Added by SSAB. For showing debug messages
 import android.app.AlertDialog;			// Added by SSAB. For showing debug messages
 import android.content.DialogInterface;		// Added by SSAB. For showing debug messages
 import android.util.Log;
@@ -651,7 +651,7 @@ public class BluetoothLePlugin extends CordovaPlugin
     JSONObject obj = getArgsObject(args);
     	//String dbgMessage = "init 0";	// Added by SSAB
 	//showDebugMsgBox("init 0");	// Added by SSAB
-	AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
+	AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity().getApplicationContext());
 		debugAlert.setMessage("init 0");
 		debugAlert.setTitle("Debug GATT Server");
 		debugAlert.setCancelable(false);
