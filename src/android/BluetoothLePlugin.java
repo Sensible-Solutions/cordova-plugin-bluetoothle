@@ -3695,19 +3695,22 @@ public class BluetoothLePlugin extends CordovaPlugin
     }
   }
   
-  /*private void showDebugMsgBox(CharSequence message)      // Function added by SSAB
+  private void showDebugMsgBox(CharSequence message)      // Function added by SSAB
 	{
-		
-		AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
-		debugAlert.setMessage(message);
-		//debugAlert.setMessage("hej");
-		debugAlert.setTitle("Debug GATT Server");
-		debugAlert.setCancelable(false);
-		debugAlert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-		        public void onClick(DialogInterface dialog, int id) {
-		          	dialog.dismiss();  
-		        }
-		});
-		debugAlert.create().show();
-	}*/
+		// Need to show the dialog on the UI thread
+		runOnUiThread(new Runnable() {
+	                @Override
+	                public void run() {
+	                	AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
+				debugAlert.setMessage(message);
+				debugAlert.setTitle("Debug Bluetooth LE");
+				debugAlert.setCancelable(false);
+				debugAlert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+				        public void onClick(DialogInterface dialog, int id) {
+				          	dialog.dismiss();  
+				        }});
+				debugAlert.create().show();
+                	}
+            	});
+	}
 }
