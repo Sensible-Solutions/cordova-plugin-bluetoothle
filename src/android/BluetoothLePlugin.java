@@ -3345,6 +3345,7 @@ public class BluetoothLePlugin extends CordovaPlugin
       //Else it failed
       else
       {
+      	showDebugMsgBox("Read error: " + status);	// Added by SSAB
         addProperty(returnObj, keyError, errorRead);
         addProperty(returnObj, keyMessage, logReadFailReturn);
         callbackContext.error(returnObj);
