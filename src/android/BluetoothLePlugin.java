@@ -649,13 +649,9 @@ public class BluetoothLePlugin extends CordovaPlugin
     Activity activity = cordova.getActivity();
 
     JSONObject obj = getArgsObject(args);
-	//showDebugMsgBox("init 0");	// Added by SSAB
-	if(obj == null)			// Added by SSAB
-		showDebugMsgBox("obj is null");	// Added by SSAB
 		
     if (obj != null && getStatusReceiver(obj))
     {
-    	showDebugMsgBox("init 1");	// Added by SSAB
       //Add a receiver to pick up when Bluetooth state changes
       activity.registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
       isReceiverRegistered = true;
@@ -2136,7 +2132,6 @@ public class BluetoothLePlugin extends CordovaPlugin
     @Override
     public void onReceive(Context context, Intent intent)
     {
-    	showDebugMsgBox("onReceive 0");	// Added by SSAB
       if (initCallbackContext == null)
       {
         return;
@@ -2146,20 +2141,34 @@ public class BluetoothLePlugin extends CordovaPlugin
       {
         JSONObject returnObj = new JSONObject();
         PluginResult pluginResult;
-    	showDebugMsgBox("onReceive 1");	// Added by SSAB
+    
         switch (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR))
         {
+          case BluetoothAdapter.STATE_TURNING_OFF:	// Case added by SSAB
+          	showDebugMsgBox("STATE_TURNING_OFF");
+          	if (scanCallbackContext != null){
+	                // "Stop scanning" if we were scanning and bluetooth was disabled.
+	                // This way, we can start a new scan using same scan callback.
+	                if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
+	                  bluetoothAdapter.stopLeScan(scanCallbackKitKat);
+	                }
+	                else {
+	                  bluetoothAdapter.getBluetoothLeScanner().stopScan(scanCallback);
+	                }
+                	scanCallbackContext = null;
+              	}
+         	break;
           case BluetoothAdapter.STATE_OFF:
           //case BluetoothAdapter.STATE_TURNING_OFF:
           //case BluetoothAdapter.STATE_TURNING_ON:
-    		showDebugMsgBox("onReceive OFF");	// Added by SSAB
+    		showDebugMsgBox("STATE_OFF");	// Added by SSAB
             addProperty(returnObj, keyStatus, statusDisabled);
             addProperty(returnObj, keyMessage, logNotEnabled);
 
             connections = new HashMap<Object, HashMap<Object,Object>>();
-            //synchronized(scanLock) {            // Change by SSAB
+            synchronized(scanLock) {
               scanCallbackContext = null;
-            //}
+            }
 
             pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
             pluginResult.setKeepCallback(true);
@@ -2181,7 +2190,7 @@ public class BluetoothLePlugin extends CordovaPlugin
                 scanCallbackContext = null;
               }
             }*/
-    		showDebugMsgBox("onReceive ON");	// Added by SSAB
+    		showDebugMsgBox("STATE_ON");	// Added by SSAB
             addProperty(returnObj, keyStatus, statusEnabled);
 
             pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
