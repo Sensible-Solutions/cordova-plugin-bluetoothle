@@ -3192,6 +3192,7 @@ public class BluetoothLePlugin extends CordovaPlugin
       int oldState = Integer.valueOf(connection.get(keyState).toString());
       if (status != BluetoothGatt.GATT_SUCCESS && oldState == BluetoothProfile.STATE_CONNECTING)
       {
+      	showDebugMsgBox("State changed from STATE_CONNECTING with error: " + status); // Added by SSAB
         //Clear out all the callbacks
         connection = new HashMap<Object, Object>();
         connection.put(keyPeripheral, gatt);
@@ -3217,6 +3218,7 @@ public class BluetoothLePlugin extends CordovaPlugin
       //Device was connected
       if (newState == BluetoothProfile.STATE_CONNECTED)
       {
+      	showDebugMsgBox("State changed to STATE_CONNECTED with status: " + status); // Added by SSAB
         if (callbackContext == null)
         {
           return;
@@ -3232,6 +3234,7 @@ public class BluetoothLePlugin extends CordovaPlugin
       //Device was disconnected
       else if (newState == BluetoothProfile.STATE_DISCONNECTED)
       {
+      	showDebugMsgBox("State changed to STATE_DISCONNECTED with status: " + status); // Added by SSAB
         CallbackContext[] callbacks = GetCallbacks(connection);
         addProperty(returnObj, keyError, errorIsDisconnected);
         addProperty(returnObj, keyMessage, logIsDisconnected);
