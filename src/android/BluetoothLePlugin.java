@@ -1,28 +1,3 @@
-/*The MIT License (MIT)
-
-Copyright (c) 2016 Rand Dusing and contributors.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.*/
-
-/* A few minor modifications to the file has been made by Sensible Solutions.
-These changes has been commented throughout the file and marked with "SSAB". */
-
 package com.randdusing.bluetoothle;
 
 import org.apache.cordova.CallbackContext;
@@ -37,6 +12,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.ParcelUuid;
+import android.provider.Settings;
 import android.util.Base64;
 
 import android.app.Activity;
@@ -65,9 +41,7 @@ import java.util.UUID;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.lang.Runnable;			// Added by SSAB. For showing debug messages
-import android.app.AlertDialog;			// Added by SSAB. For showing debug messages
-import android.content.DialogInterface;		// Added by SSAB. For showing debug messages
+
 import android.util.Log;
 
 @SuppressWarnings("unchecked")
@@ -585,12 +559,21 @@ public class BluetoothLePlugin extends CordovaPlugin
       });
       return true;
     }
+    else if ("isLocationEnabled".equals(action))
+    {
+      cordova.getThreadPool().execute(new Runnable() {
+        public void run() {
+          isLocationEnabledAction(callbackContext);
+        }
+      });
+      return true;
+    }
     return false;
   }
 
   public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults) throws JSONException
   {
-    /*if (permissionsCallback == null) {      // Change by SSAB
+    if (permissionsCallback == null) {
       return;
     }
 
@@ -599,20 +582,47 @@ public class BluetoothLePlugin extends CordovaPlugin
 
     addProperty(returnObj, "requestPermission", cordova.hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION));
 
-    permissionsCallback.success(returnObj);*/
+    permissionsCallback.success(returnObj);
   }
 
   public void hasPermissionAction(CallbackContext callbackContext) {
-    /*JSONObject returnObj = new JSONObject();      // Change by SSAB
+    JSONObject returnObj = new JSONObject();
 
     addProperty(returnObj, "hasPermission", cordova.hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION));
 
-    callbackContext.success(returnObj);*/
+    callbackContext.success(returnObj);
   }
 
   public void requestPermissionAction(CallbackContext callbackContext) {
-    /*permissionsCallback = callbackContext;      // Change by SSAB
-    cordova.requestPermission(this, REQUEST_ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION);*/
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+      JSONObject returnObj = new JSONObject();
+      addProperty(returnObj, keyError, "requestPermission");
+      addProperty(returnObj, keyMessage, logOperationUnsupported);
+      callbackContext.error(returnObj);
+      return;
+    }
+
+    permissionsCallback = callbackContext;
+    cordova.requestPermission(this, REQUEST_ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION);
+  }
+
+  public void isLocationEnabledAction(CallbackContext callbackContext) {
+    JSONObject returnObj = new JSONObject();
+
+    boolean result = true;
+
+    //Only applies to Android 6.0, which requires the users to have location services enabled to scan for devices
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+      try {
+        result = (Settings.Secure.getInt(cordova.getActivity().getContentResolver(), Settings.Secure.LOCATION_MODE) != Settings.Secure.LOCATION_MODE_OFF);
+      } catch (Settings.SettingNotFoundException e) {
+        result = true; //Probably better to default to true
+      }
+    }
+
+    addProperty(returnObj, "isLocationEnabled", result);
+
+    callbackContext.success(returnObj);
   }
 
   private void initializeAction(JSONArray args, CallbackContext callbackContext)
@@ -649,7 +659,7 @@ public class BluetoothLePlugin extends CordovaPlugin
     Activity activity = cordova.getActivity();
 
     JSONObject obj = getArgsObject(args);
-		
+
     if (obj != null && getStatusReceiver(obj))
     {
       //Add a receiver to pick up when Bluetooth state changes
@@ -774,7 +784,7 @@ public class BluetoothLePlugin extends CordovaPlugin
 
       //Save the callback context for reporting back found connections. Also the isScanning flag
       scanCallbackContext = callbackContext;
-      
+
       if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP)
       {
         boolean result = uuids.length==0 ? bluetoothAdapter.startLeScan(scanCallbackKitKat) : bluetoothAdapter.startLeScan(uuids, scanCallbackKitKat);
@@ -808,23 +818,23 @@ public class BluetoothLePlugin extends CordovaPlugin
         catch(java.lang.IllegalArgumentException e) {
         }
 
-        /*if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M)      // Change by SSAB (need API level 23...cordova android 5.0.0 or above)
+        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M)
         {
           int matchMode = obj.optInt(keyMatchMode, ScanSettings.MATCH_MODE_AGGRESSIVE);
           try { scanSettings.setMatchMode(matchMode); }
           catch(java.lang.IllegalArgumentException e) {
           }
-          
+
           int matchNum = obj.optInt(keyMatchNum, ScanSettings.MATCH_NUM_MAX_ADVERTISEMENT);
           try { scanSettings.setNumOfMatches(matchNum); }
           catch(java.lang.IllegalArgumentException e) {
           }
-          
+
           int callbackType = obj.optInt(keyCallbackType, ScanSettings.CALLBACK_TYPE_ALL_MATCHES);
           try { scanSettings.setCallbackType(callbackType); }
           catch(java.lang.IllegalArgumentException e) {
           }
-        }*/
+        }
 
         //Start the scan with or without service UUIDs
         bluetoothAdapter.getBluetoothLeScanner().startScan(scanFilter, scanSettings.build(), scanCallback);
@@ -840,7 +850,7 @@ public class BluetoothLePlugin extends CordovaPlugin
         pluginResult.setKeepCallback(true);
         callbackContext.sendPluginResult(pluginResult);
       }
-      
+
     }
   }
 
@@ -862,7 +872,7 @@ public class BluetoothLePlugin extends CordovaPlugin
         callbackContext.error(returnObj);
         return;
       }
-      
+
       if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP)
       {
         bluetoothAdapter.stopLeScan(scanCallbackKitKat);
@@ -901,7 +911,7 @@ public class BluetoothLePlugin extends CordovaPlugin
       if (device.getType() != BluetoothDevice.DEVICE_TYPE_LE) {
         continue;
       }
-      
+
       /*if (serviceUuids != null)
       {
         ParcelUuid[] uuids = device.getUuids();
@@ -990,8 +1000,7 @@ public class BluetoothLePlugin extends CordovaPlugin
     connection.put(keyDiscoveredState, STATE_UNDISCOVERED);
     connection.put(operationConnect, callbackContext);
 
-    //BluetoothGatt bluetoothGatt = device.connectGatt(cordova.getActivity().getApplicationContext(), false, new BluetoothGattCallbackExtends());	// Removed by SSAB
-    BluetoothGatt bluetoothGatt = device.connectGatt(cordova.getActivity().getApplicationContext(), true, new BluetoothGattCallbackExtends());		// Change by SSAB (autoConnect flag to true)
+    BluetoothGatt bluetoothGatt = device.connectGatt(cordova.getActivity().getApplicationContext(), false, new BluetoothGattCallbackExtends());
 
     connection.put(keyPeripheral, bluetoothGatt);
 
@@ -1351,7 +1360,7 @@ public class BluetoothLePlugin extends CordovaPlugin
     addDevice(returnObj, device);
 
     addCharacteristic(returnObj, characteristic);
-    
+
     CallbackContext checkExisting = GetCallback(characteristicUuid, connection, operationSubscribe);
     if (checkExisting != null)
     {
@@ -1457,7 +1466,7 @@ public class BluetoothLePlugin extends CordovaPlugin
     addDevice(returnObj, device);
 
     addCharacteristic(returnObj, characteristic);
-    
+
     CallbackContext checkExisting = GetCallback(characteristicUuid, connection, operationSubscribe);
     if (checkExisting == null)
     {
@@ -2142,27 +2151,13 @@ public class BluetoothLePlugin extends CordovaPlugin
       {
         JSONObject returnObj = new JSONObject();
         PluginResult pluginResult;
-    
+
         switch (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR))
         {
-          case BluetoothAdapter.STATE_TURNING_OFF:	// Case added by SSAB
-          	showDebugMsgBox("STATE_TURNING_OFF");
-          	if (scanCallbackContext != null){
-	                // "Stop scanning" if we were scanning and bluetooth was disabled.
-	                // This way, we can start a new scan using same scan callback.
-	                if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
-	                  bluetoothAdapter.stopLeScan(scanCallbackKitKat);
-	                }
-	                else {
-	                  bluetoothAdapter.getBluetoothLeScanner().stopScan(scanCallback);
-	                }
-                	scanCallbackContext = null;
-              	}
-         	break;
           case BluetoothAdapter.STATE_OFF:
           //case BluetoothAdapter.STATE_TURNING_OFF:
           //case BluetoothAdapter.STATE_TURNING_ON:
-    		showDebugMsgBox("STATE_OFF");	// Added by SSAB
+
             addProperty(returnObj, keyStatus, statusDisabled);
             addProperty(returnObj, keyMessage, logNotEnabled);
 
@@ -2177,7 +2172,7 @@ public class BluetoothLePlugin extends CordovaPlugin
 
             break;
           case BluetoothAdapter.STATE_ON:
-    		showDebugMsgBox("STATE_ON");	// Added by SSAB
+
             addProperty(returnObj, keyStatus, statusEnabled);
 
             pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
@@ -2242,16 +2237,16 @@ public class BluetoothLePlugin extends CordovaPlugin
       }
     }
   };
-  
+
   //Scan Callback
   private ScanCallback scanCallback = null;
-  
+
   //TODO Is there a cleaner way to prevent this from running on KitKat
   protected void pluginInitialize() {
     if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
       return;
     }
-    
+
     scanCallback = new ScanCallback()
     {
       @Override
@@ -2906,7 +2901,7 @@ public class BluetoothLePlugin extends CordovaPlugin
     if (obj == null) {
       return new UUID[] {};
     }
-    
+
     JSONArray array = obj.optJSONArray(keyServices);
 
     if (array == null)
@@ -3122,7 +3117,7 @@ public class BluetoothLePlugin extends CordovaPlugin
   private JSONObject getPermissions(BluetoothGattCharacteristic characteristic)
   {
     int permissions = characteristic.getPermissions();
-    
+
     JSONObject permissionsObject = new JSONObject();
 
     if ((permissions & BluetoothGattCharacteristic.PERMISSION_READ) == BluetoothGattCharacteristic.PERMISSION_READ)
@@ -3193,7 +3188,6 @@ public class BluetoothLePlugin extends CordovaPlugin
       int oldState = Integer.valueOf(connection.get(keyState).toString());
       if (status != BluetoothGatt.GATT_SUCCESS && oldState == BluetoothProfile.STATE_CONNECTING)
       {
-      	showDebugMsgBox("State changed from STATE_CONNECTING with error: " + status); // Added by SSAB
         //Clear out all the callbacks
         connection = new HashMap<Object, Object>();
         connection.put(keyPeripheral, gatt);
@@ -3219,7 +3213,6 @@ public class BluetoothLePlugin extends CordovaPlugin
       //Device was connected
       if (newState == BluetoothProfile.STATE_CONNECTED)
       {
-      	showDebugMsgBox("State changed to STATE_CONNECTED with status: " + status); // Added by SSAB
         if (callbackContext == null)
         {
           return;
@@ -3235,7 +3228,6 @@ public class BluetoothLePlugin extends CordovaPlugin
       //Device was disconnected
       else if (newState == BluetoothProfile.STATE_DISCONNECTED)
       {
-      	showDebugMsgBox("State changed to STATE_DISCONNECTED with status: " + status); // Added by SSAB
         CallbackContext[] callbacks = GetCallbacks(connection);
         addProperty(returnObj, keyError, errorIsDisconnected);
         addProperty(returnObj, keyMessage, logIsDisconnected);
@@ -3349,7 +3341,6 @@ public class BluetoothLePlugin extends CordovaPlugin
       //Else it failed
       else
       {
-      	showDebugMsgBox("Read error: " + status);	// Added by SSAB
         addProperty(returnObj, keyError, errorRead);
         addProperty(returnObj, keyMessage, logReadFailReturn);
         callbackContext.error(returnObj);
@@ -3681,23 +3672,4 @@ public class BluetoothLePlugin extends CordovaPlugin
       }
     }
   }
-  
-  private void showDebugMsgBox(final String message)      // Function added by SSAB
-	{
-		// Need to show the dialog on the UI thread
-		cordova.getActivity().runOnUiThread(new Runnable() {
-	                @Override
-	                public void run() {
-	                	AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
-				debugAlert.setMessage(message);
-				debugAlert.setTitle("Debug Bluetooth LE");
-				debugAlert.setCancelable(false);
-				debugAlert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-				        public void onClick(DialogInterface dialog, int id) {
-				          	dialog.dismiss();  
-				        }});
-				debugAlert.create().show();
-                	}
-            	});
-	}
 }
