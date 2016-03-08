@@ -18,6 +18,7 @@
         <param name="android-package" value="com.randdusing.bluetoothle.BluetoothLePlugin" />
       </feature>
     </config-file>
+    <!-- <framework src="com.android.support:support-v4:+" /> -->   <!-- Test SSAB -->
     <source-file src="src/android/BluetoothLePlugin.java" target-dir="src/com/randdusing/bluetoothle" />
     <config-file target="AndroidManifest.xml" parent="/manifest">
       <uses-permission android:name="android.permission.BLUETOOTH"/>
