@@ -2182,10 +2182,24 @@ public class BluetoothLePlugin extends CordovaPlugin
 
         switch (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR))
         {
+          case BluetoothAdapter.STATE_TURNING_OFF:	// Case and its block added by SSAB
+          	//showDebugMsgBox("STATE_TURNING_OFF");
+          	if (scanCallbackContext != null){
+	            // "Stop scanning" if we were scanning while bluetooth was disabled.
+	            // This way, we can start a new scan using same scan callback.
+	            if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
+	              bluetoothAdapter.stopLeScan(scanCallbackKitKat);
+	            }
+	            else {
+	              bluetoothAdapter.getBluetoothLeScanner().stopScan(scanCallback);
+	            }
+              scanCallbackContext = null;
+            }
+         	  break;
           case BluetoothAdapter.STATE_OFF:
           //case BluetoothAdapter.STATE_TURNING_OFF:
           //case BluetoothAdapter.STATE_TURNING_ON:
-
+            //showDebugMsgBox("STATE_OFF");   // Added by SSAB
             addProperty(returnObj, keyStatus, statusDisabled);
             addProperty(returnObj, keyMessage, logNotEnabled);
 
