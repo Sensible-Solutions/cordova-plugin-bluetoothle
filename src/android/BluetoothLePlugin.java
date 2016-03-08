@@ -2214,7 +2214,7 @@ public class BluetoothLePlugin extends CordovaPlugin
 
             break;
           case BluetoothAdapter.STATE_ON:
-
+		//showDebugMsgBox("STATE_ON");	// Added by SSAB
             addProperty(returnObj, keyStatus, statusEnabled);
 
             pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
