@@ -3256,6 +3256,7 @@ public class BluetoothLePlugin extends CordovaPlugin
       //Device was connected
       if (newState == BluetoothProfile.STATE_CONNECTED)
       {
+      	//showDebugMsgBox("State changed to STATE_CONNECTED with status: " + status); // Added by SSAB
         if (callbackContext == null)
         {
           return;
@@ -3271,6 +3272,7 @@ public class BluetoothLePlugin extends CordovaPlugin
       //Device was disconnected
       else if (newState == BluetoothProfile.STATE_DISCONNECTED)
       {
+      	//showDebugMsgBox("State changed to STATE_DISCONNECTED with status: " + status); // Added by SSAB
         CallbackContext[] callbacks = GetCallbacks(connection);
         addProperty(returnObj, keyError, errorIsDisconnected);
         addProperty(returnObj, keyMessage, logIsDisconnected);
@@ -3384,6 +3386,7 @@ public class BluetoothLePlugin extends CordovaPlugin
       //Else it failed
       else
       {
+      	//showDebugMsgBox("Read error: " + status);	// Added by SSAB
         addProperty(returnObj, keyError, errorRead);
         addProperty(returnObj, keyMessage, logReadFailReturn);
         callbackContext.error(returnObj);
@@ -3714,5 +3717,25 @@ public class BluetoothLePlugin extends CordovaPlugin
         callbackContext.error(returnObj);
       }
     }
+  }
+  
+  private void showDebugMsgBox(final String message)      // Function added by SSAB
+  {
+  	// Need to show the dialog on the UI thread
+	cordova.getActivity().runOnUiThread(new Runnable() {
+	 	@Override
+	        public void run() {
+	        	AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
+			debugAlert.setMessage(message);
+			debugAlert.setTitle("Debug Bluetooth LE");
+			debugAlert.setCancelable(false);
+			debugAlert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					dialog.dismiss();
+				}
+			});
+			debugAlert.create().show();
+                }
+        });
   }
 }
