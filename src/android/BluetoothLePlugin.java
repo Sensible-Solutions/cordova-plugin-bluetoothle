@@ -3230,6 +3230,7 @@ public class BluetoothLePlugin extends CordovaPlugin
       int oldState = Integer.valueOf(connection.get(keyState).toString());
       if (status != BluetoothGatt.GATT_SUCCESS && oldState == BluetoothProfile.STATE_CONNECTING)
       {
+      	//showDebugMsgBox("State changed from STATE_CONNECTING with error: " + status); // Added by SSAB
         //Clear out all the callbacks
         connection = new HashMap<Object, Object>();
         connection.put(keyPeripheral, gatt);
