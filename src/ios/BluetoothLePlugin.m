@@ -326,8 +326,8 @@ NSString *const operationWrite = @"write";
     }
 
     //Get connected connections with specified services
-    //NSArray* peripherals = [centralManager retrieveConnectedPeripheralsWithServices:serviceUuids];
-     NSArray* peripherals = [centralManager retrievePeripheralsWithIdentifiers:serviceUuids];     // Test SSAB
+    NSArray* peripherals = [centralManager retrieveConnectedPeripheralsWithServices:serviceUuids];
+     //NSArray* peripherals = [centralManager retrievePeripheralsWithIdentifiers:serviceUuids];     // Test SSAB
 
     //Array to store returned peripherals
     NSMutableArray* peripheralsOut = [[NSMutableArray alloc] init];
