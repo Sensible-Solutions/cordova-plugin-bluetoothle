@@ -1,25 +1,3 @@
-/*The MIT License (MIT)
-
-Copyright (c) 2016 Rand Dusing and contributors.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.*/
-
 #import "BluetoothLePlugin.h"
 
 //Plugin Name
@@ -909,7 +887,7 @@ NSString *const operationWrite = @"write";
     {
         return;
     }
-  
+
     if (characteristic.isNotifying) {
       NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorSubscription, keyError, logSubscribeAlready, keyMessage, nil];
       CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
@@ -976,7 +954,7 @@ NSString *const operationWrite = @"write";
     {
         return;
     }
-  
+
     if (!characteristic.isNotifying) {
       NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorSubscription, keyError, logUnsubscribeAlready, keyMessage, nil];
       CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
@@ -1431,6 +1409,14 @@ NSString *const operationWrite = @"write";
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+- (void)isLocationEnabled:(CDVInvokedUrlCommand *)command
+{
+    NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: @"isLocationEnabled", keyError, logOperationUnsupported, keyMessage, nil];
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
+    [pluginResult setKeepCallbackAsBool:false];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 //Central Manager Delegates
 - (void) centralManagerDidUpdateState:(CBCentralManager *)central
 {
@@ -1523,7 +1509,7 @@ NSString *const operationWrite = @"write";
     {
         return;
     }
-  
+
     NSMutableDictionary* advertisement = [NSMutableDictionary dictionary];
 
     [advertisement setValue:[advertisementData valueForKey:CBAdvertisementDataLocalNameKey] forKey:@"localName"];
@@ -1678,7 +1664,7 @@ NSString *const operationWrite = @"write";
     {
         return;
     }
-  
+
     //Return disconnected connection information
     NSMutableDictionary* returnObj = [NSMutableDictionary dictionary];
 
