@@ -2176,7 +2176,8 @@ public class BluetoothLePlugin extends CordovaPlugin
 	// private HashMap<Object, HashMap<Object,Object>> connections;
 	for(java.util.Map.Entry<Object, HashMap<Object,Object>> entry : connections.entrySet()) {
    		//String key = entry.getKey();
-   		 BluetoothGatt value = (BluetoothGatt)entry.getValue();
+		//(BluetoothGatt)connection.get(keyPeripheral);
+   		 BluetoothGatt value = (BluetoothGatt)entry.getValue().get(keyPeripheral);
 		 value.close();
 	}
   }
