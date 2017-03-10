@@ -2166,20 +2166,12 @@ public class BluetoothLePlugin extends CordovaPlugin
       }
       
       	// Added by SSAB 2017-03-10
-	 /*HashMap<Object, Object> connection = wasNeverConnected(address, callbackContext);
-    if (connection == null)
-    {
-      return;
-    }
-    BluetoothGatt bluetoothGatt = (BluetoothGatt)connection.get(keyPeripheral);*/
-	//HashMap<String, HashMap> selects = new HashMap<String, HashMap>();
-	// private HashMap<Object, HashMap<Object,Object>> connections;
+	// Close all connections or they will remain open if closing the app with the "back button"
 	for(java.util.Map.Entry<Object, HashMap<Object,Object>> entry : connections.entrySet()) {
-   		//String key = entry.getKey();
-		//(BluetoothGatt)connection.get(keyPeripheral);
    		 BluetoothGatt value = (BluetoothGatt)entry.getValue().get(keyPeripheral);
 		 value.close();
 	}
+	// End added by SSAB
   }
 
   private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
