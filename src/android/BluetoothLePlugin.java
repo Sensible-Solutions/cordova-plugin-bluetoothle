@@ -2166,20 +2166,17 @@ public class BluetoothLePlugin extends CordovaPlugin
       }
       
       	// Added by SSAB 2017-03-10
-	 HashMap<Object, Object> connection = wasNeverConnected(address, callbackContext);
+	 /*HashMap<Object, Object> connection = wasNeverConnected(address, callbackContext);
     if (connection == null)
     {
       return;
     }
-
-    BluetoothGatt bluetoothGatt = (BluetoothGatt)connection.get(keyPeripheral);
-	HashMap<String, HashMap> selects = new HashMap<String, HashMap>();
-	for(Map.Entry<String, HashMap> entry : selects.entrySet()) {
-   		String key = entry.getKey();
-   		 HashMap value = entry.getValue();
-
-    		// do what you have to do here
-    		// In your case, an other loop.
+    BluetoothGatt bluetoothGatt = (BluetoothGatt)connection.get(keyPeripheral);*/
+	//HashMap<String, HashMap> selects = new HashMap<String, HashMap>();
+	for(Map.Entry<Object, Object> entry : connections.entrySet()) {
+   		//String key = entry.getKey();
+   		 BluetoothGatt value = entry.getValue();
+		 value.close();
 	}
   }
 
