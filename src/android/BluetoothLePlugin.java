@@ -789,6 +789,7 @@ public class BluetoothLePlugin extends CordovaPlugin
 
   private void startScanAction(JSONArray args, CallbackContext callbackContext)
   {
+  	showDebugMsgBox("startScan 0");   // Added by SSAB
     synchronized(scanLock) {
       if (isNotInitialized(callbackContext, true))
       {
@@ -811,7 +812,7 @@ public class BluetoothLePlugin extends CordovaPlugin
 
       //Save the callback context for reporting back found connections. Also the isScanning flag
       scanCallbackContext = callbackContext;
-
+	showDebugMsgBox("startScan 1");   // Added by SSAB
       if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP)
       {
         boolean result = uuids.length==0 ? bluetoothAdapter.startLeScan(scanCallbackKitKat) : bluetoothAdapter.startLeScan(uuids, scanCallbackKitKat);
@@ -844,7 +845,7 @@ public class BluetoothLePlugin extends CordovaPlugin
         try { scanSettings.setScanMode(scanMode); }
         catch(java.lang.IllegalArgumentException e) {
         }
-
+	showDebugMsgBox("startScan 2");   // Added by SSAB
         if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M)
         {
           int matchMode = obj.optInt(keyMatchMode, ScanSettings.MATCH_MODE_AGGRESSIVE);
@@ -862,11 +863,11 @@ public class BluetoothLePlugin extends CordovaPlugin
           catch(java.lang.IllegalArgumentException e) {
           }
         }
-
+	showDebugMsgBox("startScan 3");   // Added by SSAB
         //Start the scan with or without service UUIDs
         bluetoothAdapter.getBluetoothLeScanner().startScan(scanFilter, scanSettings.build(), scanCallback);
       }
-
+	showDebugMsgBox("startScan 4");   // Added by SSAB
       {
         JSONObject returnObj = new JSONObject();
 
