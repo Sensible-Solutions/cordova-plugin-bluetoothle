@@ -865,7 +865,7 @@ public class BluetoothLePlugin extends CordovaPlugin
         }
 	showDebugMsgBox("startScan 3");   // Added by SSAB
         //Start the scan with or without service UUIDs
-        bluetoothAdapter.getBluetoothLeScanner().startScan(scanFilter, scanSettings.build(), scanCallback);
+        //bluetoothAdapter.getBluetoothLeScanner().startScan(scanFilter, scanSettings.build(), scanCallback);
       }
 	showDebugMsgBox("startScan 4");   // Added by SSAB
       {
