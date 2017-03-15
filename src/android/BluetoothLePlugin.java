@@ -813,6 +813,7 @@ public class BluetoothLePlugin extends CordovaPlugin
       //Save the callback context for reporting back found connections. Also the isScanning flag
       scanCallbackContext = callbackContext;
 	showDebugMsgBox("startScan 1");   // Added by SSAB
+	return;				// Added by SSAB
       if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP)
       {
         boolean result = uuids.length==0 ? bluetoothAdapter.startLeScan(scanCallbackKitKat) : bluetoothAdapter.startLeScan(uuids, scanCallbackKitKat);
