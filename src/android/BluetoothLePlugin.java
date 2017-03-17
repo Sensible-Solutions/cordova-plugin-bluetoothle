@@ -2207,11 +2207,11 @@ public class BluetoothLePlugin extends CordovaPlugin
           case BluetoothAdapter.STATE_OFF:
           //case BluetoothAdapter.STATE_TURNING_OFF:
           //case BluetoothAdapter.STATE_TURNING_ON:
-            //showDebugMsgBox("STATE_OFF");   // Added by SSAB
+            showDebugMsgBox("In BluetoothLePlugin: STATE_OFF");   // Added by SSAB
             addProperty(returnObj, keyStatus, statusDisabled);
             addProperty(returnObj, keyMessage, logNotEnabled);
 
-            connections = new HashMap<Object, HashMap<Object,Object>>();
+            //connections = new HashMap<Object, HashMap<Object,Object>>();	// Removed by SSAB 2017-03-17
             synchronized(scanLock) {
               scanCallbackContext = null;
             }
