@@ -80,6 +80,7 @@ public class BluetoothLePlugin extends CordovaPlugin
   private final int REQUEST_ACCESS_COARSE_LOCATION = 59628;
   private BluetoothAdapter bluetoothAdapter;
   private boolean isReceiverRegistered = false;
+  private boolean directConnect = true;			// Added by SSAB 2017-03-21
 
   //General callback variables
   private CallbackContext initCallbackContext;
@@ -656,6 +657,8 @@ public class BluetoothLePlugin extends CordovaPlugin
   {
     //Save init callback
     initCallbackContext = callbackContext;
+    
+    directConnect = true;	// Added by SSAB 2017-03-21
 
     if (bluetoothAdapter != null)
     {
@@ -1027,9 +1030,16 @@ public class BluetoothLePlugin extends CordovaPlugin
     connection.put(keyDiscoveredState, STATE_UNDISCOVERED);
     connection.put(operationConnect, callbackContext);
 
-    //BluetoothGatt bluetoothGatt = device.connectGatt(cordova.getActivity().getApplicationContext(), false, new BluetoothGattCallbackExtends());   // Removed and replaced with below line by SSAB
-    BluetoothGatt bluetoothGatt = device.connectGatt(cordova.getActivity().getApplicationContext(), true, new BluetoothGattCallbackExtends());		  // Change by SSAB (autoConnect flag set to true)
-    showDebugMsgBox("connectGatt called!");
+    if (directConnect){
+    	BluetoothGatt bluetoothGatt = device.connectGatt(cordova.getActivity().getApplicationContext(), false, new BluetoothGattCallbackExtends());   // Removed and replaced with below line by SSAB
+    	showDebugMsgBox("Direct connection requested!");
+	directConnect = false;
+    }
+    else {	// Background connection (auto connect)
+    	BluetoothGatt bluetoothGatt = device.connectGatt(cordova.getActivity().getApplicationContext(), true, new BluetoothGattCallbackExtends());	// Change by SSAB (autoConnect flag set to true)
+    	showDebugMsgBox("Backgrounf connection requested!");
+    }
+    //showDebugMsgBox("connectGatt called!");
     
     connection.put(keyPeripheral, bluetoothGatt);
 
