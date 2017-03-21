@@ -2213,7 +2213,16 @@ public class BluetoothLePlugin extends CordovaPlugin
             showDebugMsgBox("In BluetoothLePlugin: STATE_OFF");   // Added by SSAB
             addProperty(returnObj, keyStatus, statusDisabled);
             addProperty(returnObj, keyMessage, logNotEnabled);
-
+	    
+	    	// Added by SSAB 2017-03-21
+	 	// Close all connections or auto connect will keep on running (if connectGatt called with auto connect option)
+		// even after bluetooth has been disabled
+		for(java.util.Map.Entry<Object, HashMap<Object,Object>> entry : connections.entrySet()) {
+   		 	BluetoothGatt value = (BluetoothGatt)entry.getValue().get(keyPeripheral);
+		 	value.close();
+		}
+		// End added by SSAB
+	    
             connections = new HashMap<Object, HashMap<Object,Object>>();
             synchronized(scanLock) {
               scanCallbackContext = null;
