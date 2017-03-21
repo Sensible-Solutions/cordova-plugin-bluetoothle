@@ -2211,7 +2211,7 @@ public class BluetoothLePlugin extends CordovaPlugin
           case BluetoothAdapter.STATE_OFF:
           //case BluetoothAdapter.STATE_TURNING_OFF:
           //case BluetoothAdapter.STATE_TURNING_ON:
-            showDebugMsgBox("In BluetoothLePlugin: STATE_OFF");   // Added by SSAB
+            showDebugMsgBox("In BluetoothLePlugin: STATE_OFF 0");   // Added by SSAB
             addProperty(returnObj, keyStatus, statusDisabled);
             addProperty(returnObj, keyMessage, logNotEnabled);
 	    
@@ -2222,6 +2222,7 @@ public class BluetoothLePlugin extends CordovaPlugin
    		 	BluetoothGatt value = (BluetoothGatt)entry.getValue().get(keyPeripheral);
 			value.disconnect();	// Makes sure any pending connection attempt is canceled
 		 	value.close();
+			showDebugMsgBox("In BluetoothLePlugin: STATE_OFF 1");
 		}
 		// End added by SSAB
 	    
