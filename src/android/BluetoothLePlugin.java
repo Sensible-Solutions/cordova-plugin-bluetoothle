@@ -1029,7 +1029,8 @@ public class BluetoothLePlugin extends CordovaPlugin
 
     //BluetoothGatt bluetoothGatt = device.connectGatt(cordova.getActivity().getApplicationContext(), false, new BluetoothGattCallbackExtends());   // Removed and replaced with below line by SSAB
     BluetoothGatt bluetoothGatt = device.connectGatt(cordova.getActivity().getApplicationContext(), true, new BluetoothGattCallbackExtends());		  // Change by SSAB (autoConnect flag set to true)
-
+    showDebugMsgBox("connectGatt called!");
+    
     connection.put(keyPeripheral, bluetoothGatt);
 
     connections.put(device.getAddress(), connection);
