@@ -1027,9 +1027,9 @@ public class BluetoothLePlugin extends CordovaPlugin
     connection.put(keyDiscoveredState, STATE_UNDISCOVERED);
     connection.put(operationConnect, callbackContext);
 
-    BluetoothGatt bluetoothGatt = device.connectGatt(cordova.getActivity().getApplicationContext(), false, new BluetoothGattCallbackExtends());   // Removed and replaced with below line by SSAB
-    //BluetoothGatt bluetoothGatt = device.connectGatt(cordova.getActivity().getApplicationContext(), true, new BluetoothGattCallbackExtends());		  // Change by SSAB (autoConnect flag set to true)
-    showDebugMsgBox("After connectGatt!");
+    //BluetoothGatt bluetoothGatt = device.connectGatt(cordova.getActivity().getApplicationContext(), false, new BluetoothGattCallbackExtends());   // Removed and replaced with below line by SSAB
+    BluetoothGatt bluetoothGatt = device.connectGatt(cordova.getActivity().getApplicationContext(), true, new BluetoothGattCallbackExtends());		  // Change by SSAB (autoConnect flag set to true)
+    showDebugMsgBox("connectGatt called!");
     
     connection.put(keyPeripheral, bluetoothGatt);
 
@@ -1147,6 +1147,7 @@ public class BluetoothLePlugin extends CordovaPlugin
     }
 
     bluetoothGatt.disconnect();
+    showDebugMsgBox("disconnect() called!");
   }
 
   private void closeAction(JSONArray args, CallbackContext callbackContext)
@@ -1191,6 +1192,7 @@ public class BluetoothLePlugin extends CordovaPlugin
     addDevice(returnObj, device);
 
     bluetoothGatt.close();
+    showDebugMsgBox("close() called!");
 
     connections.remove(device.getAddress());
 
