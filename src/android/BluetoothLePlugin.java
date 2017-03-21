@@ -1034,6 +1034,12 @@ public class BluetoothLePlugin extends CordovaPlugin
     connection.put(keyPeripheral, bluetoothGatt);
 
     connections.put(device.getAddress(), connection);
+    
+    	// Added by SSAB (debug test)
+    	for(java.util.Map.Entry<Object, HashMap<Object,Object>> entry : connections.entrySet()) {
+   		//BluetoothGatt value = (BluetoothGatt)entry.getValue().get(keyPeripheral);
+		showDebugMsgBox("In BluetoothLePlugin: connect loop!");
+	}
   }
 
   private void reconnectAction(JSONArray args, CallbackContext callbackContext)
