@@ -2219,6 +2219,7 @@ public class BluetoothLePlugin extends CordovaPlugin
 		// even after bluetooth has been disabled
 		for(java.util.Map.Entry<Object, HashMap<Object,Object>> entry : connections.entrySet()) {
    		 	BluetoothGatt value = (BluetoothGatt)entry.getValue().get(keyPeripheral);
+			value.disconnect();	// Makes sure any pending connection attempt is canceled
 		 	value.close();
 		}
 		// End added by SSAB
