@@ -1031,17 +1031,18 @@ public class BluetoothLePlugin extends CordovaPlugin
     connection.put(operationConnect, callbackContext);
 
     // Section Added by SSAB 2017-03-21
-    /*BluetoothGatt bluetoothGatt;
+    // Request a direct connection the first time since some devices are using very small scan interval and window for background connections
+    BluetoothGatt bluetoothGatt;
     if (directConnect){
     	bluetoothGatt = device.connectGatt(cordova.getActivity().getApplicationContext(), false, new BluetoothGattCallbackExtends());
-	showDebugMsgBox("Direct connection requested!");
+	//showDebugMsgBox("Direct connection requested!");
 	directConnect = false;
     }
-    else {	// Background connection (auto connect)
+    else {	// Background connection (auto connect), can be notable slow if the peripheral's advertiseing interval is large
     	bluetoothGatt = device.connectGatt(cordova.getActivity().getApplicationContext(), true, new BluetoothGattCallbackExtends());
-	showDebugMsgBox("Background connection requested!");
-    }*/
-    BluetoothGatt bluetoothGatt = device.connectGatt(cordova.getActivity().getApplicationContext(), true, new BluetoothGattCallbackExtends());
+	//showDebugMsgBox("Background connection requested!");
+    }
+    //BluetoothGatt bluetoothGatt = device.connectGatt(cordova.getActivity().getApplicationContext(), true, new BluetoothGattCallbackExtends());
     //showDebugMsgBox("connectGatt called!");
     // End section added by SSAB
     //BluetoothGatt bluetoothGatt = device.connectGatt(cordova.getActivity().getApplicationContext(), false, new BluetoothGattCallbackExtends());   // Removed by SSAB
