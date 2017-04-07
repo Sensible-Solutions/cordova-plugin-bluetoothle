@@ -1163,7 +1163,6 @@ public class BluetoothLePlugin extends CordovaPlugin
     }
 
     bluetoothGatt.disconnect();
-    showDebugMsgBox("disconnect() called!");
   }
 
   private void closeAction(JSONArray args, CallbackContext callbackContext)
@@ -1208,7 +1207,6 @@ public class BluetoothLePlugin extends CordovaPlugin
     addDevice(returnObj, device);
 
     bluetoothGatt.close();
-    showDebugMsgBox("close() called!");		// Added by SSAB
 
     connections.remove(device.getAddress());
 
